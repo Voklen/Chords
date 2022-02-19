@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Chords',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.amber,
       ),
       home: const MyHomePage(title: 'Hallelujah Chords'),
     );
@@ -74,12 +74,14 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text(
-                'You have pushed the button this many times:',
+              Text(
+                'Welcome, click the button bellow to get some lyrics & chords:',
+                style: Theme.of(context).textTheme.headline5,
+                textAlign: TextAlign.center,
               ),
               Text(
                 resultantHtml,
-                style: Theme.of(context).textTheme.headline4,
+                style: Theme.of(context).textTheme.bodyText2,
               ),
             ],
           ),
