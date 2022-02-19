@@ -79,6 +79,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: Theme.of(context).textTheme.headline5,
                 textAlign: TextAlign.center,
               ),
+              ElevatedButton(
+                child: const Text('Get chords'),
+                onPressed: updateChords,
+              ),
               Text(
                 resultantHtml,
                 style: Theme.of(context).textTheme.bodyText2,
@@ -87,11 +91,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: updateChords,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
