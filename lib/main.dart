@@ -36,7 +36,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String resultantHtml = "";
 
-  void updateChords() {
+  Future<void> updateChords() async {
     // This simply returns the body of the chords webpage
     Future<Document> fetchChords() async {
       final response = await http.get(Uri.parse(
@@ -49,18 +49,21 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
 
-    // setState updates the state of the app so our change to resultantHtml will actually show
-    setState(() {
-      fetchChords().then((document) {
-        String? stringInHtml = document
-            .getElementsByClassName('js-store')[0]
-            .attributes['data-content'];
+    // Download the chord's webpage
+    var document = await fetchChords();
 
-        var asJson = jsonDecode(stringInHtml ?? "");
-        var tabView = asJson['store']['page']['data']['tab_view'];
-        resultantHtml = tabView['wiki_tab']['content'];
-      });
-    });
+    // Get the json of the lyrics & chords (with other data we don't need) from the HTML
+    String? stringInHtml = document
+        .getElementsByClassName('js-store')[0]
+        .attributes['data-content'];
+    var asJson = jsonDecode(stringInHtml ?? "");
+
+    // Get lyrics & chords from the json
+    var tabView = asJson['store']['page']['data']['tab_view'];
+    resultantHtml = tabView['wiki_tab']['content'];
+
+    // setState updates the state of the app so our change to resultantHtml will actually show
+    setState(() {});
   }
 
   @override
