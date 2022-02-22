@@ -18,8 +18,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Chords',
       theme: ThemeData(
-        primarySwatch: Colors.amber,
-      ),
+          primarySwatch: Colors.amber,
+          textTheme: const TextTheme(
+              bodyText1: TextStyle(
+            backgroundColor: Colors.black87,
+            color: Colors.white70,
+          ))),
       home: const MyHomePage(title: 'Hallelujah Chords'),
     );
   }
@@ -72,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
       String lineToPrint = lines[i];
       if (lineToPrint.substring(max(lineToPrint.length - 6, 0)).trim() ==
           '[/ch]') {
-        format = Theme.of(context).textTheme.headline4;
+        format = Theme.of(context).textTheme.bodyText1;
       }
       list.add(SizedBox(
         child: Text(
