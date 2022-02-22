@@ -76,7 +76,11 @@ class _MyHomePageState extends State<MyHomePage> {
       }
       list.add(SizedBox(
         child: Text(
-          lineToPrint,
+          lineToPrint // Remove all tags from output
+              .replaceAll('[tab]', '')
+              .replaceAll('[/tab]', '')
+              .replaceAll('[ch]', '')
+              .replaceAll('[/ch]', ''),
           style: format,
         ),
         width: MediaQuery.of(context).size.width,
