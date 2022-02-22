@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:html/dom.dart' hide Text;
@@ -35,6 +36,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String resultantHtml = "";
+  List<SizedBox> list = [];
 
   Future<void> updateChords() async {
     // This simply returns the body of the chords webpage
@@ -58,9 +60,29 @@ class _MyHomePageState extends State<MyHomePage> {
         .attributes['data-content'];
     var asJson = jsonDecode(stringInHtml ?? "");
 
-    // Get lyrics & chords from the json
+    // Get lyrics & chords as string from the json
     var tabView = asJson['store']['page']['data']['tab_view'];
-    resultantHtml = tabView['wiki_tab']['content'];
+    String resultantString = tabView['wiki_tab']['content'];
+
+    // Format chords
+    List<String> lines = resultantString.split("\n");
+    list = [];
+    for (int i = 0; i < lines.length; i++) {
+      var format = Theme.of(context).textTheme.bodyText2;
+      String lineToPrint = lines[i];
+      if (lineToPrint.substring(max(lineToPrint.length - 6, 0)).trim() ==
+          '[/ch]') {
+        format = Theme.of(context).textTheme.headline4;
+      }
+      list.add(SizedBox(
+        child: Text(
+          lineToPrint,
+          style: format,
+        ),
+        width: MediaQuery.of(context).size.width,
+      ));
+    }
+    resultantHtml = resultantString;
 
     // setState updates the state of the app so our change to resultantHtml will actually show
     setState(() {});
@@ -77,20 +99,17 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                'Welcome, click the button bellow to get some lyrics & chords:',
-                style: Theme.of(context).textTheme.headline5,
-                textAlign: TextAlign.center,
-              ),
-              ElevatedButton(
-                child: const Text('Get chords'),
-                onPressed: updateChords,
-              ),
-              Text(
-                resultantHtml,
-                style: Theme.of(context).textTheme.bodyText2,
-              ),
-            ],
+                  Text(
+                    'Welcome, click the button bellow to get some lyrics & chords:',
+                    style: Theme.of(context).textTheme.headline5,
+                    textAlign: TextAlign.center,
+                  ),
+                  ElevatedButton(
+                    child: const Text('Get chords'),
+                    onPressed: updateChords,
+                  ),
+                ] +
+                list,
           ),
         ),
       ),
