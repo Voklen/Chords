@@ -18,12 +18,33 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Chords',
       theme: ThemeData(
-          primarySwatch: Colors.amber,
-          textTheme: const TextTheme(
-              bodyText1: TextStyle(
-            backgroundColor: Colors.black87,
-            color: Colors.white70,
-          ))),
+        scaffoldBackgroundColor: const Color(0xFFf8f8f8),
+        primarySwatch: Colors.amber,
+        textTheme: const TextTheme(
+          bodyText1: TextStyle(
+            backgroundColor: Color(0xFFdfdfdf),
+            color: Color(0xFF212121),
+          ),
+          bodyText2: TextStyle(
+            color: Color(0xFF212121),
+          ),
+        ),
+      ),
+      darkTheme: ThemeData(
+        scaffoldBackgroundColor: const Color(0xFF111111),
+        primarySwatch: Colors.amber,
+        textTheme: const TextTheme(
+            bodyText1: TextStyle(
+              backgroundColor: Color(0xFF292929),
+              color: Color(0xFFddddcc),
+            ),
+            bodyText2: TextStyle(
+              color: Color(0xFFddddcc),
+            ),
+            headline5: TextStyle(
+              color: Color(0xFFddddcc),
+            )),
+      ),
       home: const MyHomePage(title: 'Hallelujah Chords'),
     );
   }
