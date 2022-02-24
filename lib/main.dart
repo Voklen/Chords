@@ -48,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // This simply returns the body of the chords webpage
     Future<Document> fetchChords() async {
       final response = await http.get(Uri.parse(
-          'https://tabs.ultimate-guitar.com/tab/jeff-buckley/hallelujah-chords-198052'));
+          'https://tabs.ultimate-guitar.com/tab/billie-eilish/lovely-chords-2371539'));
 
       if (response.statusCode == 200) {
         return parse(response.body);
