@@ -6,6 +6,8 @@ import 'package:html/dom.dart' hide Text;
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 
+import 'theme.dart' as theme;
+
 void main() {
   runApp(const MyApp());
 }
@@ -17,35 +19,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Chords',
-      theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFFf8f8f8),
-        primarySwatch: Colors.amber,
-        textTheme: const TextTheme(
-          bodyText1: TextStyle(
-            backgroundColor: Color(0xFFdfdfdf),
-            color: Color(0xFF212121),
-          ),
-          bodyText2: TextStyle(
-            color: Color(0xFF212121),
-          ),
-        ),
-      ),
-      darkTheme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFF111111),
-        primarySwatch: Colors.amber,
-        textTheme: const TextTheme(
-            bodyText1: TextStyle(
-              backgroundColor: Color(0xFF292929),
-              color: Color(0xFFddddcc),
-            ),
-            bodyText2: TextStyle(
-              color: Color(0xFFddddcc),
-            ),
-            headline5: TextStyle(
-              color: Color(0xFFddddcc),
-            )),
-      ),
-      home: const MyHomePage(title: 'Hallelujah Chords'),
+      theme: theme.lightTheme,
+      darkTheme: theme.darkTheme,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const MyHomePage(title: 'Hallelujah Chords'),
+        // '/second': (context) => SecondRoute(),
+        // '/third': (context) => ThirdRoute(),
+      },
     );
   }
 }
