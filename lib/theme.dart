@@ -7,12 +7,12 @@ var lightTheme = ThemeData(
     bodyText1: TextStyle(
       fontFamily: 'Drafting',
       backgroundColor: Color(0xFFdfdfdf),
-      color: Color(0xFF212121),
     ),
     bodyText2: TextStyle(
       fontFamily: 'Drafting',
-      color: Color(0xFF212121),
     ),
+  ).apply(
+    bodyColor: const Color(0xFF212121),
   ),
 );
 
@@ -23,14 +23,12 @@ var darkTheme = ThemeData(
     bodyText1: TextStyle(
       fontFamily: 'Drafting',
       backgroundColor: Color(0xFF292929),
-      color: Color(0xFFddddcc),
     ),
     bodyText2: TextStyle(
       fontFamily: 'Drafting',
-      color: Color(0xFFddddcc),
     ),
-    headline5: TextStyle(
-      color: Color(0xFFddddcc),
-    ),
+    headline5: TextStyle(),
+  ).apply(
+    bodyColor: const Color(0xFFddddcc),
   ),
 );
