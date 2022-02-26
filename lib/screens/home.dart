@@ -51,9 +51,8 @@ class _HomePageState extends State<HomePage> {
     list = [];
     for (int i = 0; i < lines.length; i++) {
       var format = Theme.of(context).textTheme.bodyText2;
-      String lineToPrint = lines[i];
-      if (lineToPrint.substring(max(lineToPrint.length - 6, 0)).trim() ==
-          '[/ch]') {
+      String lineToPrint = lines[i].trim();
+      if (lineToPrint.substring(max(lineToPrint.length - 5, 0)) == '[/ch]') {
         format = Theme.of(context).textTheme.bodyText1;
       }
       list.add(SizedBox(
