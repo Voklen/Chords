@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 
@@ -17,14 +16,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _textController = TextEditingController();
   String resultantHtml = "";
-  List<SizedBox> list = [];
+  List<ResultCard> _list = [];
 
-  Future<void> updateChords() async {
-    // This simply returns the body of the chords webpage
-    Future<Document> fetchChords() async {
+  Future<void> search() async {
+    // This simply returns the body of the search's webpage
+    Future<Document> fetchSearch() async {
       final response = await http.get(Uri.parse(
-          'https://tabs.ultimate-guitar.com/tab/billie-eilish/lovely-chords-2371539'));
+          'https://www.ultimate-guitar.com/search.php?search_type=title&value=' +
+              _textController.text));
 
       if (response.statusCode == 200) {
         return parse(response.body);
@@ -34,7 +35,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     // Download the chord's webpage
-    var document = await fetchChords();
+    var document = await fetchSearch();
 
     // Get the json of the lyrics & chords (with other data we don't need) from the HTML
     String? stringInHtml = document
@@ -43,33 +44,27 @@ class _HomePageState extends State<HomePage> {
     var asJson = jsonDecode(stringInHtml ?? "");
 
     // Get lyrics & chords as string from the json
-    var tabView = asJson['store']['page']['data']['tab_view'];
-    String resultantString = tabView['wiki_tab']['content'];
+    var resultsAsJson = asJson['store']['page']['data']['results'];
+    var results = List.from(resultsAsJson);
 
-    // Format chords
-    List<String> lines = resultantString.split("\n");
-    list = [];
-    for (int i = 0; i < lines.length; i++) {
-      var format = Theme.of(context).textTheme.bodyText2;
-      String lineToPrint = lines[i].trim();
-      if (lineToPrint.substring(max(lineToPrint.length - 5, 0)) == '[/ch]') {
-        format = Theme.of(context).textTheme.bodyText1;
+    // Loop through results
+    _list = [];
+    for (int i = 0; i < results.length; i++) {
+      var result = results[i];
+      if (result['marketing_type'] != null) {
+        // Don't add premium-only songs
+        continue;
       }
-      list.add(SizedBox(
-        child: Text(
-          lineToPrint // Remove all tags from output
-              .replaceAll('[tab]', '')
-              .replaceAll('[/tab]', '')
-              .replaceAll('[ch]', '')
-              .replaceAll('[/ch]', ''),
-          style: format,
-        ),
-        width: MediaQuery.of(context).size.width,
+      _list.add(ResultCard(
+        artist: result['artist_name'],
+        song: result['song_name'],
+        rating: result['rating'].toString(),
+        type: result['type'],
+        url: result['tab_url'],
       ));
     }
-    resultantHtml = resultantString;
 
-    // setState updates the state of the app so our change to resultantHtml will actually show
+    // setState updates the state of the app so our change to the list will actually show
     setState(() {});
   }
 
@@ -89,15 +84,79 @@ class _HomePageState extends State<HomePage> {
                     style: Theme.of(context).textTheme.headline5,
                     textAlign: TextAlign.center,
                   ),
+                  TextField(
+                    controller: _textController,
+                    decoration: InputDecoration(
+                        hintText: 'Enter search',
+                        hintStyle: Theme.of(context).textTheme.headline6,
+                        labelStyle: Theme.of(context).textTheme.headline6,
+                        border: const OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.clear),
+                        )),
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
                   ElevatedButton(
-                    child: const Text('Get chords'),
-                    onPressed: updateChords,
+                    child: const Text('Get results'),
+                    onPressed: () {
+                      search();
+                    },
                   ),
                 ] +
-                list,
+                _list,
           ),
         ),
       ),
+    );
+  }
+}
+
+class ResultCard extends StatelessWidget {
+  final String artist;
+  final String song;
+  final String rating;
+  final String type;
+  final String url;
+
+  const ResultCard({
+    required this.artist,
+    required this.song,
+    required this.rating,
+    required this.type,
+    required this.url,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            SizedBox(
+              width: 80,
+              child: Text(artist),
+            ),
+            SizedBox(
+              width: 110,
+              child: Text(song),
+            ),
+            SizedBox(
+              width: 61,
+              child: Text(rating),
+            ),
+            SizedBox(
+              width: 40,
+              child: Text(type),
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/display', arguments: url);
+                },
+                child: const Text('Get chords'))
+          ],
+        )
+      ],
     );
   }
 }

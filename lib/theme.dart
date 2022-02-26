@@ -28,6 +28,7 @@ var darkTheme = ThemeData(
       fontFamily: 'Drafting',
     ),
     headline5: TextStyle(),
+    headline6: TextStyle(height: 1),
   ).apply(
     bodyColor: const Color(0xFFddddcc),
   ),

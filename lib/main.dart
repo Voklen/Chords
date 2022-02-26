@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'screens/home.dart';
+import 'screens/display.dart';
 import 'theme.dart';
 
 void main() {
@@ -19,7 +20,7 @@ class App extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const HomePage(title: 'Hallelujah Chords'),
-        // '/second': (context) => SecondRoute(),
+        '/display': (context) => const DisplayPage(title: 'Search'),
         // '/third': (context) => ThirdRoute(),
       },
     );
