@@ -8,11 +8,9 @@ import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 
 class DisplayPage extends StatefulWidget {
-  const DisplayPage({Key? key, required this.title, this.songUrl = ''})
-      : super(key: key);
+  const DisplayPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
-  final String songUrl;
 
   @override
   State<DisplayPage> createState() => _DisplayPageState();
@@ -80,21 +78,12 @@ class _DisplayPageState extends State<DisplayPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: list,
-          ),
-        ),
+      body: ListView.builder(
+        itemCount: list.length,
+        itemBuilder: (context, index) {
+          return list[index];
+        },
       ),
     );
   }
 }
-
-// class SongArguments {
-//   final String title;
-//   final String songUrl;
-
-//   SongArguments(this.title, this.songUrl);
-// }
