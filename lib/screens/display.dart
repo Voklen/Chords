@@ -17,11 +17,11 @@ class DisplayPage extends StatefulWidget {
 }
 
 class _DisplayPageState extends State<DisplayPage> {
-  List<SizedBox> list = [];
+  List<SizedBox> _list = [];
 
-  Future<void> updateChords() async {
+  Future<List<SizedBox>> _updateChords() async {
     // This simply returns the body of the chords webpage
-    Future<Document> fetchChords() async {
+    Future<Document> _fetchChords() async {
       final _url = ModalRoute.of(context)!.settings.arguments as String;
       final response = await http.get(Uri.parse(_url));
 
@@ -33,7 +33,7 @@ class _DisplayPageState extends State<DisplayPage> {
     }
 
     // Download the chord's webpage
-    var document = await fetchChords();
+    var document = await _fetchChords();
 
     // Get the json of the lyrics & chords (with other data we don't need) from the HTML
     String? stringInHtml = document
@@ -47,14 +47,14 @@ class _DisplayPageState extends State<DisplayPage> {
 
     // Format chords
     List<String> lines = resultantString.split("\n");
-    list = [];
+    List<SizedBox> _outputList = [];
     for (int i = 0; i < lines.length; i++) {
       var format = Theme.of(context).textTheme.bodyText2;
       String lineToPrint = lines[i].trim();
       if (lineToPrint.substring(max(lineToPrint.length - 5, 0)) == '[/ch]') {
         format = Theme.of(context).textTheme.bodyText1;
       }
-      list.add(SizedBox(
+      _outputList.add(SizedBox(
         child: Text(
           lineToPrint // Remove all tags from output
               .replaceAll('[tab]', '')
@@ -67,21 +67,30 @@ class _DisplayPageState extends State<DisplayPage> {
       ));
     }
 
-    // setState updates the state of the app so our change to the list will actually show
-    setState(() {});
+    return _outputList;
+  }
+
+  @override
+  void didChangeDependencies() {
+    _updateChords().then((value) {
+      // setState updates the state of the app so our change to the list will actually show
+      setState(() {
+        _list = value;
+      });
+    });
+    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    updateChords();
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
       body: ListView.builder(
-        itemCount: list.length,
+        itemCount: _list.length,
         itemBuilder: (context, index) {
-          return list[index];
+          return _list[index];
         },
       ),
     );
