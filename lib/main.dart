@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'screens/home.dart';
-import 'screens/display.dart';
+import 'screens/screens.dart';
 import 'theme.dart';
 
 void main() {
@@ -18,11 +17,7 @@ class App extends StatelessWidget {
       theme: lightTheme,
       darkTheme: darkTheme,
       initialRoute: '/',
-      routes: {
-        '/': (context) => const HomePage(title: 'Hallelujah Chords'),
-        '/display': (context) => const DisplayPage(title: 'Search'),
-        // '/third': (context) => ThirdRoute(),
-      },
+      routes: screenRoutes,
     );
   }
 }
