@@ -6,10 +6,10 @@ import 'package:html/dom.dart' hide Text;
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key, required this.title}) : super(key: key);
+import 'screens.dart';
 
-  final String title;
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -17,7 +17,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _textController = TextEditingController();
-  String resultantHtml = "";
   List<ResultCard> _list = [];
 
   Future<void> search() async {
@@ -72,7 +71,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text("Home"),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -151,7 +150,8 @@ class ResultCard extends StatelessWidget {
             ),
             ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/display', arguments: url);
+                  Navigator.pushNamed(context, '/display',
+                      arguments: ScreenArguments(song, url));
                 },
                 child: const Text('Get chords'))
           ],

@@ -1,7 +1,14 @@
 import 'home.dart';
 import 'display.dart';
 
+class ScreenArguments {
+  final String title;
+  final String url;
+
+  ScreenArguments(this.title, this.url);
+}
+
 var screenRoutes = {
-  '/': (context) => const HomePage(title: 'Chords'),
-  '/display': (context) => const DisplayPage(title: 'Search'),
+  '/': (context) => const HomePage(),
+  '/display': (context) => const DisplayPage(),
 };

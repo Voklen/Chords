@@ -7,22 +7,22 @@ import 'package:html/dom.dart' hide Text;
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 
-class DisplayPage extends StatefulWidget {
-  const DisplayPage({Key? key, required this.title}) : super(key: key);
+import 'screens.dart';
 
-  final String title;
+class DisplayPage extends StatefulWidget {
+  const DisplayPage({Key? key}) : super(key: key);
 
   @override
   State<DisplayPage> createState() => _DisplayPageState();
 }
 
 class _DisplayPageState extends State<DisplayPage> {
+  late ScreenArguments _args;
   List<SizedBox> _list = [];
 
-  Future<List<SizedBox>> _updateChords() async {
+  Future<List<SizedBox>> _updateChords(_url) async {
     // This simply returns the body of the chords webpage
     Future<Document> _fetchChords() async {
-      final _url = ModalRoute.of(context)!.settings.arguments as String;
       final response = await http.get(Uri.parse(_url));
 
       if (response.statusCode == 200) {
@@ -72,7 +72,8 @@ class _DisplayPageState extends State<DisplayPage> {
 
   @override
   void didChangeDependencies() {
-    _updateChords().then((value) {
+    _args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
+    _updateChords(_args.url).then((value) {
       // setState updates the state of the app so our change to the list will actually show
       setState(() {
         _list = value;
@@ -85,7 +86,7 @@ class _DisplayPageState extends State<DisplayPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(_args.title),
       ),
       body: ListView.builder(
         itemCount: _list.length,
