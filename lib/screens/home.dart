@@ -91,7 +91,9 @@ class _HomePageState extends State<HomePage> {
                         labelStyle: Theme.of(context).textTheme.headline6,
                         border: const OutlineInputBorder(),
                         suffixIcon: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _textController.clear();
+                          },
                           icon: const Icon(Icons.clear),
                         )),
                     style: Theme.of(context).textTheme.headline6,
