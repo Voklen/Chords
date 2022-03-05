@@ -83,21 +83,7 @@ class _HomePageState extends State<HomePage> {
                     style: Theme.of(context).textTheme.headline5,
                     textAlign: TextAlign.center,
                   ),
-                  TextField(
-                    controller: _textController,
-                    decoration: InputDecoration(
-                        hintText: 'Enter search',
-                        hintStyle: Theme.of(context).textTheme.headline6,
-                        labelStyle: Theme.of(context).textTheme.headline6,
-                        border: const OutlineInputBorder(),
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            _textController.clear();
-                          },
-                          icon: const Icon(Icons.clear),
-                        )),
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
+                  _MainSearchBar(),
                   ElevatedButton(
                     child: const Text('Get results'),
                     onPressed: () {
@@ -109,6 +95,25 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _MainSearchBar() {
+    return TextField(
+      controller: _textController,
+      decoration: InputDecoration(
+          hintText: 'Enter search',
+          hintStyle: Theme.of(context).textTheme.headline6,
+          labelStyle: Theme.of(context).textTheme.headline6,
+          border: const OutlineInputBorder(),
+          // Clear button
+          suffixIcon: IconButton(
+            onPressed: () {
+              _textController.clear();
+            },
+            icon: const Icon(Icons.clear),
+          )),
+      style: Theme.of(context).textTheme.headline6,
     );
   }
 }
@@ -152,8 +157,11 @@ class ResultCard extends StatelessWidget {
             ),
             ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/display',
-                      arguments: ScreenArguments(song, url));
+                  Navigator.pushNamed(
+                    context,
+                    '/display',
+                    arguments: ScreenArguments(song, url),
+                  );
                 },
                 child: const Text('Get chords'))
           ],
