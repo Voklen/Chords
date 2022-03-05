@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
     _list = [];
     for (int i = 0; i < results.length; i++) {
       var result = results[i];
-      if (result['marketing_type'] != null) {
+      if ((result['marketing_type'] != null) | (result['type'] == 'Pro')) {
         // Don't add premium-only songs
         continue;
       }
@@ -114,6 +114,9 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.clear),
           )),
       style: Theme.of(context).textTheme.headline6,
+      onSubmitted: (value) {
+        search();
+      },
     );
   }
 }
