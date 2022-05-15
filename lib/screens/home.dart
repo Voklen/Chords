@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
                     style: Theme.of(context).textTheme.headline5,
                     textAlign: TextAlign.center,
                   ),
-                  _MainSearchBar(),
+                  _mainSearchBar(),
                   ElevatedButton(
                     child: const Text('Get results'),
                     onPressed: () {
@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _MainSearchBar() {
+  Widget _mainSearchBar() {
     return TextField(
       controller: _textController,
       decoration: InputDecoration(
@@ -129,12 +129,13 @@ class ResultCard extends StatelessWidget {
   final String url;
 
   const ResultCard({
+    Key? key,
     required this.artist,
     required this.song,
     required this.rating,
     required this.type,
     required this.url,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
